@@ -1,6 +1,71 @@
 import React, { useCallback } from 'react';
 import axios from 'axios';
 
+const convertToFahrenheit = (temp) => {
+  return Math.trunc((temp - 273.15) * 1.8 + 32) + "°F";
+};
+
+const createWeatherBlock = (data) => {
+  const cityName = data.name;
+  const icon = data.weather[0].icon;
+  const temp = convertToFahrenheit(data.main.temp);
+  const disc = data.weather[0].description;
+  const newDiv = document.createElement('div');
+  newDiv.className = 'weather';
+  const cityEle = document.createElement('div');
+  cityEle.className = 'city';
+  cityEle.innerHTML = cityName;
+  const tempEle = document.createElement('div');
+  tempEle.className = 'temp';
+  tempEle.innerHTML = temp;
+  const imgEle = document.createElement('img');
+  imgEle.className = 'icon';
+  imgEle.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  const discEle = document.createElement('div');
+  discEle.className = 'disc';
+  discEle.innerHTML = disc;
+  const timeEle = document.createElement('div');
+  timeEle.className = 'time';
+  timeEle.innerHTML = 'Current Time';
+  newDiv.appendChild(cityEle);
+  newDiv.appendChild(tempEle);
+  newDiv.appendChild(imgEle);
+  newDiv.appendChild(discEle);
+  newDiv.appendChild(timeEle);
+  return newDiv;
+};
+
+const createForcastBlock = (data, i) => {
+  const cityName = data.city.name;
+  const icon = data.list[i].weather[0].icon;
+  const temp = convertToFahrenheit(data.list[i].main.temp);
+  const disc = data.list[i].weather[0].description;
+  const time = data.list[i].dt_txt;
+  const newDiv = document.createElement('div');
+  newDiv.className = 'weather';
+  const cityEle = document.createElement('div');
+  cityEle.className = 'city';
+  cityEle.innerHTML = cityName;
+  const tempEle = document.createElement('div');
+  tempEle.className = 'temp';
+  tempEle.innerHTML = temp;
+  const imgEle = document.createElement('img');
+  imgEle.className = 'icon';
+  imgEle.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+  const discEle = document.createElement('div');
+  discEle.className = 'disc';
+  discEle.innerHTML = disc;
+  const timeEle = document.createElement('div');
+  timeEle.className = 'time';
+  timeEle.innerHTML = time;
+  newDiv.appendChild(cityEle);
+  newDiv.appendChild(tempEle);
+  newDiv.appendChild(imgEle);
+  newDiv.appendChild(discEle);
+  newDiv.appendChild(timeEle);
+  return newDiv;
+};
+
 const Weather = () => {
   const getWeatherData = async (lat, lon) => {
     try {
@@ -69,36 +134,6 @@ const Weather = () => {
     weatherBlocks.appendChild(newWeather);
   }, []);
 
-  const createWeatherBlock = (data) => {
-    const cityName = data.name;
-    const icon = data.weather[0].icon;
-    const temp = convertToFahrenheit(data.main.temp);
-    const disc = data.weather[0].description;
-    const newDiv = document.createElement('div');
-    newDiv.className = 'weather';
-    const cityEle = document.createElement('div');
-    cityEle.className = 'city';
-    cityEle.innerHTML = cityName;
-    const tempEle = document.createElement('div');
-    tempEle.className = 'temp';
-    tempEle.innerHTML = temp;
-    const imgEle = document.createElement('img');
-    imgEle.className = 'icon';
-    imgEle.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-    const discEle = document.createElement('div');
-    discEle.className = 'disc';
-    discEle.innerHTML = disc;
-    const timeEle = document.createElement('div');
-    timeEle.className = 'time';
-    timeEle.innerHTML = 'Current Time';
-    newDiv.appendChild(cityEle);
-    newDiv.appendChild(tempEle);
-    newDiv.appendChild(imgEle);
-    newDiv.appendChild(discEle);
-    newDiv.appendChild(timeEle);
-    return newDiv;
-  };
-
   const displayFor = useCallback((data) => {
     const ForBlocks = document.getElementById("for-weather");
     for (let i = 0; i < 8; i++) {
@@ -106,41 +141,6 @@ const Weather = () => {
       ForBlocks.appendChild(newFor);
     }
   }, []);
-
-  const createForcastBlock = (data, i) => {
-    const cityName = data.city.name;
-    const icon = data.list[i].weather[0].icon;
-    const temp = convertToFahrenheit(data.list[i].main.temp);
-    const disc = data.list[i].weather[0].description;
-    const time = data.list[i].dt_txt;
-    const newDiv = document.createElement('div');
-    newDiv.className = 'weather';
-    const cityEle = document.createElement('div');
-    cityEle.className = 'city';
-    cityEle.innerHTML = cityName;
-    const tempEle = document.createElement('div');
-    tempEle.className = 'temp';
-    tempEle.innerHTML = temp;
-    const imgEle = document.createElement('img');
-    imgEle.className = 'icon';
-    imgEle.src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
-    const discEle = document.createElement('div');
-    discEle.className = 'disc';
-    discEle.innerHTML = disc;
-    const timeEle = document.createElement('div');
-    timeEle.className = 'time';
-    timeEle.innerHTML = time;
-    newDiv.appendChild(cityEle);
-    newDiv.appendChild(tempEle);
-    newDiv.appendChild(imgEle);
-    newDiv.appendChild(discEle);
-    newDiv.appendChild(timeEle);
-    return newDiv;
-  };
-
-  const convertToFahrenheit = (temp) => {
-    return Math.trunc((temp - 273.15) * 1.8 + 32) + "°F";
-  };
 
   return (
     <div className="weather-outer">
