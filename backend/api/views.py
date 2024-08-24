@@ -1,16 +1,3 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
-
-# @api_view(['GET'])
-# def get_weather(request):
-#     data = {"temperature": "20°C", "condition": "Sunny"}
-#     return Response(data)
-
-# @api_view(['GET'])
-# def get_forecast(request):
-#     data = {"forecast": ["Sunny", "Cloudy", "Rainy"]}
-#     return Response(data)
-
 import requests
 from django.http import JsonResponse
 from django.views import View
